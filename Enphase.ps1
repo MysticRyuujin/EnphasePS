@@ -30,13 +30,13 @@ function Get-SolarStatus {
     
     $Results = Invoke-RestMethod -Uri ($Controller + "/production.json") -Credential $SolarCreds
     
-    $TotalConsuption = ($Results.consumption | Where-Object { $_.measurementType -eq "total-consumption" }).wNow
+    $TotalConsumption = ($Results.consumption | Where-Object { $_.measurementType -eq "total-consumption" }).wNow
     $TotalProduction = ($Results.production[1]).wNow
     $NetPowerStatus = ($Results.consumption | Where-Object { $_.measurementType -eq "net-consumption" }).wNow
     
     @{
         "Production" = [string]::Format('{0:N0}',$TotalProduction)
-        "Consuption" = [string]::Format('{0:N0}',$TotalConsuption)
+        "Consumption" = [string]::Format('{0:N0}',$TotalConsumption)
         "Net Usage" = [string]::Format('{0:N0}',$NetPowerStatus)
     }
 }
