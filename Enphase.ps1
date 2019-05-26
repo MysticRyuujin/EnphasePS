@@ -1,6 +1,6 @@
 <#
 .Synopsis
-   Get Enphase Solar Production, Consumption, and Net Useage
+   Get Enphase Solar Production, Consumption, and Net Use
 .DESCRIPTION
    If you have not changed the password to your controller use the SerialNumber, otherwise use CustomPassword
 .EXAMPLE
@@ -18,17 +18,21 @@ function Get-SolarStatus {
         [string]$SerialNumber,
 
         [Parameter(Mandatory=$true, ParameterSetName = "CustomPassword")]
-        [string]$CustomPassword
+        [string]$CustomPassword,
+
+        [Parameter(Mandatory=$true, ParameterSetName = "Credentials")]
+        [pscredential]$Credentials
     )
 
     if ($PSCmdlet.ParameterSetName -eq "DefaultPassword") {
         $SecPassword = ConvertTo-SecureString ($SerialNumber.Remove(0,($SerialNumber.Length - 6))) -AsPlainText -Force
-    } else {
+        $Credentials = New-Object System.Management.Automation.PSCredential ("envoy", $SecPassword)
+    } elseif ($PSCmdlet.ParameterSetName -eq "CustomPassword") {
         $SecPassword = ConvertTo-SecureString $CustomPassword -AsPlainText -Force
+        $Credentials = New-Object System.Management.Automation.PSCredential ("envoy", $SecPassword)
     }
-    $SolarCreds = New-Object System.Management.Automation.PSCredential ("envoy", $SecPassword)
     
-    $Results = Invoke-RestMethod -Uri ($Controller + "/production.json") -Credential $SolarCreds
+    $Results = Invoke-RestMethod -Uri ($Controller + "/production.json") -Credential $Credentials
     
     $TotalConsumption = ($Results.consumption | Where-Object { $_.measurementType -eq "total-consumption" }).wNow
     $TotalProduction = ($Results.production[1]).wNow
