@@ -12,7 +12,7 @@ If you have not changed the password to your controller use the SerialNumber, ot
 ```
 Name                           Value
 ----                           -----
-Consuption                     3,207
+Consumption                    3,207
 Production                     4,242
 Net Usage                      -1,035
 ```
