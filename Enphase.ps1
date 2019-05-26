@@ -37,6 +37,6 @@ function Get-SolarStatus {
     @{
         "Production" = [string]::Format('{0:N0}',$TotalProduction)
         "Consuption" = [string]::Format('{0:N0}',$TotalConsuption)
-        "Net Useage" = [string]::Format('{0:N0}',$NetPowerStatus)
+        "Net Usage" = [string]::Format('{0:N0}',$NetPowerStatus)
     }
 }
