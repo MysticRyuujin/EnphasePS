@@ -5,10 +5,10 @@ If you have not changed the password to your controller use the SerialNumber, ot
 
 ## EXAMPLE (Default Password)
    Get-SolarStatus -Controller "http://192.168.1.207" -SerialNumber 1234567890
-## EXAMPLE (Plain Text Password)
-   Get-SolarStatus -Controller "http://enphase.local" -CustomPassword 'MyCustomPassword'
 ## EXAMPLE (PSCredential)
    Get-SolarStatus -Controller "http://enphase.local" -Credentials (Get-Credential)
+## EXAMPLE (Plain Text Password)
+   Get-SolarStatus -Controller "http://enphase.local" -CustomPassword 'MyCustomPassword'
    
 ## Output
 ```
