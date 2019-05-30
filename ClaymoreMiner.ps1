@@ -31,7 +31,7 @@ function Get-NetPowerText {
     if ($Global:NetPowerAverage -gt 0) {
         Write-Host "Importing $($Global:NetPowerAverage) watts" -ForegroundColor Red
     } else {
-        Write-Host "Exporting $($Global:NetPowerAverage) watts" -ForegroundColor Green
+        Write-Host "Exporting $([Math]::Abs($Global:NetPowerAverage)) watts" -ForegroundColor Green
     }
 }
 
