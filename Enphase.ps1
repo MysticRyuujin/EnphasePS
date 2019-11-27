@@ -2,9 +2,11 @@
 .Synopsis
    Get Enphase Solar Production, Consumption, and Net Use
 .DESCRIPTION
-   If you have not changed the password to your controller use the SerialNumber, otherwise use CustomPassword
+   If you have not changed the password to your controller use the -SerialNumber, otherwise use -Credentials or -CustomPassword
 .EXAMPLE
    Get-SolarStatus -Controller "http://192.168.1.207" -SerialNumber 1234567890
+.EXAMPLE
+   Get-SolarStatus -Controller "http://enphase.local" -Credentials (Get-Credential "envoy")
 .EXAMPLE
    Get-SolarStatus -Controller "http://enphase.local" -CustomPassword 'MyCustomPassword'
 #>
@@ -32,7 +34,11 @@ function Get-SolarStatus {
         $Credentials = New-Object System.Management.Automation.PSCredential ("envoy", $SecPassword)
     }
     
-    $Results = Invoke-RestMethod -Uri ($Controller + "/production.json") -Credential $Credentials
+    if ($PSVersionTable.PSVersion.Major -gt 5) {
+        $Results = Invoke-RestMethod -Uri ($Controller + "/production.json") -Credential $Credentials -AllowUnencryptedAuthentication
+    } else {
+        $Results = Invoke-RestMethod -Uri ($Controller + "/production.json") -Credential $Credentials
+    }
     
     $TotalConsumption = ($Results.consumption | Where-Object { $_.measurementType -eq "total-consumption" }).wNow
     $TotalProduction = ($Results.production[1]).wNow
